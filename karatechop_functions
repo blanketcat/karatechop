@@ -1,19 +1,18 @@
 #!/bin/bash
 
-############################################################
-## Chop a large file into a shitload of smaller files
-## or reassemble the shitload of smaller files
-## into the original larger file.
-##########################
-#############
-######
-####
-###
-#
-#
-##
-#####
-######
-################
-######################
+karate_chop() {
+	local target_file=$1
+	local dest_dir=$2
+	mkdir karatechop-log
+	split --unbuffered -d "$target_file" "karatechop.log."
+	mv karatechop.log.* "$dest_dir"
+}
 
+karate_fix() {
+	local target_dir=$1
+	local target_file="$(basename $target_dir)"
+	local dest_dir=$2
+	cat $target_dir/karatechop.log.* > "$target_file"
+	mv "$target_file" $dest_dir
+	rm karatechop.log.*
+}
