@@ -1,0 +1,98 @@
+#!/bin/bash
+
+path_to_karatechop="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+. $path_to_karatechop/karatechop_functions
+
+karate_mode="none"
+
+## Check for no args
+if [[ $# < 1 ]]; then
+	echo "no args."
+	# man $path_to_karatechop/manpage/karatechop.1 | cat
+	exit 1
+fi
+
+## Scan args, set variables.
+while [ "$1" ]
+do
+	if [[ "$karate_mode" == "none" ]]; then
+		if [[ "$1" != "-c" || "--chop" || "-r" || "--reassemble" ]]; then
+			echo "wrong args"
+			man $path_to_karatechop/manpage/karatechop.1 | cat
+			exit 1
+		else
+			case $1 in
+				-c|--chop)
+					karate_mode="chop"
+					shift
+					;;
+				-r|--reassemble)
+					karate_mode="reassemble"
+					shift
+					;;
+			esac
+		fi
+	fi
+	if [[ "$karate_mode" == "chop" ]]; then
+		case $1 in
+			-i|--input-file)
+				shift
+				if [[ ! -f $1 ]]; then
+					echo "-i $1: Not a valid file."
+					exit 1
+				fi
+				input_file="$1"
+				shift
+				;;
+			-o|--output-dir)
+				shift
+				if [[ ! -d $1 ]]; then
+					mkdir $1
+				fi
+				if [[ ! -d $1 ]]; then
+					echo "-o $1: Directory does not exist and could not be created."
+					exit 1
+				fi
+				output_dir=$1
+				shift
+				;;
+		esac
+	fi
+	if [[ "$karate_mode" == "reassemble" ]]; then
+		case $1 in
+			-d|--input-dir)
+				shift
+				if [[ ! -d $1 ]]; then
+					echo "-i $1: Not a valid directory."
+					exit 1
+				fi
+				input_dir="$1"
+				shift
+				;;
+			-o|--output-dir)
+				shift
+				if [[ ! -d $1 ]]; then
+					mkdir $1
+				fi
+				if [[ ! -d $1 ]]; then
+					echo "-o $1: Directory does not exist and could not be created."
+					exit 1
+				fi
+				output_dir=$1
+				shift
+				;;
+		esac
+	fi
+done
+
+
+main() {
+	if [[ "$karate_mode" == "chop" ]]; then
+		karatechop $input_file $output_dir
+	elif [[ "$karate_mode" == "reassemble" ]]; then
+		karate_fix $input_dir $output_dir
+	fi
+	exit 0
+}
+
+main

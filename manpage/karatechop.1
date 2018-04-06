@@ -1,0 +1,42 @@
+.TH KARATECHOP 1
+.SH NAME
+Karate-Chop \- File chunker & reassembler
+.SH SYNOPSIS
+.B karatechop\fR [\fIMODE\fR] [\fIOPTIONS\fR] [\fIFILE(S)\fR]
+
+.SH DESCRIPTION
+.B karatechop\fR chops a large file into a number of smaller files (chunks) or reassembles a set of files (chunks) into the original file.
+.PP
+.B karatechop\fR has two modes: chop, and reassemble.
+.PP
+.B karatechop\fR \fB-c|--chop\fR [\fIOPTIONS\fR] \fB\-i\fR [\fIINPUT-FILE\fR] \fB-p\fR [\fIOUTPUT-PREFIX\fR]
+will chop a file into [\fIN\fR] chunks and places the chunks in a folder.
+.PP
+.B karatechop\fR \fB-r|--reassemble\fR [\fIOPTIONS\fR] \fB-d\fR [\fIPATH-TO-CHOPPED-FILES\fR]
+will reassemble the chunks in folder specified into the original file.
+.PP
+.SH MODE
+.TP
+.BR -c ", "--chop\fR
+In chop mode, \fBkaratechop\fR takes the target file specified, and chunks it into a number of smaller files.
+.TP
+.BR -r ", "--reassemble\fR
+In reassemble mode, \fBkaratechop\fR takes the target directory containing a set of chopped files, and reassembles it into the original file.
+.PP
+.SH OPTIONS
+.TP
+.BR \-d ", "\-\-chopped-dir \fI\ /path/to/dir/containing/chopped/files\fR
+(Used with [\fB-r|--reassemble\fR]) Absolute or relative path to the directory containing the chopped files.
+.TP
+.BR \-h ", "\-\-help
+Brings up the help dialog and exits.
+.TP
+.BR \-i ", "\-\-input\-file
+(Used with [\fB-c|--chop\fR]) Path to the input file to chop.
+.TP
+.BR \-o ", "\-\-output\-dir  "\fI\ "/path/to/output/dir\fR
+Set the path to the directory to which karatechop should write the resulting chopped files or reassembled file.
+.PP
+.SH NOTES
+.PP
+HIYA!
